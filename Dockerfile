@@ -31,8 +31,8 @@ RUN apt-get update && apt-get install -y \
     xml \
     mbstring
 
-# Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+# Install Node.js 18.x
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Install Composer
@@ -41,12 +41,15 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copy Mautic files
 COPY . /var/www/html
 
+# Set permissions for npm (avoid running as root)
+RUN chown -R www-data:www-data /var/www/html
+
+# Switch to a non-root user
+USER www-data
+
 # Install Mautic dependencies
 WORKDIR /var/www/html
-RUN composer install --no-dev --optimize-autoloader
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Expose port 80
 EXPOSE 80
