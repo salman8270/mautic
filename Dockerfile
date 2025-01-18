@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libpng-dev \
     libwebp-dev \
-    libc-client-dev \        # Required for IMAP
-    libkrb5-dev \            # Required for IMAP
+    libc-client-dev \
+    libkrb5-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \  # Configure IMAP
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install -j$(nproc) \
     zip \
     pdo \
