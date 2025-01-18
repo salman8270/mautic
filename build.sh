@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Install PHP and required extensions
+apt-get update && apt-get install -y \
+    php \
+    php-cli \
+    php-zip \
+    php-pgsql \
+    php-xml
+
 # Install Composer
 EXPECTED_CHECKSUM="$(curl -s https://composer.github.io/installer.sig)"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
