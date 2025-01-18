@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     pdo \
     pdo_pgsql \
+    pdo_mysql \  # Add this line
     bcmath \
     imap \
     sockets \
@@ -49,7 +50,14 @@ USER www-data
 
 # Install Mautic dependencies
 WORKDIR /var/www/html
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN composer install --no-dev --optimize-autoloader
+
+# Build frontend assets
+RUN npm ci --prefer-offline --no-audit \
+    && npm run build
+
+# Set ServerName for Apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Expose port 80
 EXPOSE 80
