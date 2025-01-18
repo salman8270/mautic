@@ -1,7 +1,7 @@
 # Use an official PHP image with Apache
 FROM php:8.1-apache
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -30,6 +30,10 @@ RUN apt-get update && apt-get install -y \
     intl \
     xml \
     mbstring
+
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
