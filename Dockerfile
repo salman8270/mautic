@@ -7,7 +7,26 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libpq-dev \
-    && docker-php-ext-install zip pdo pdo_pgsql
+    libicu-dev \
+    libxml2-dev \
+    libgd-dev \
+    libonig-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) \
+    zip \
+    pdo \
+    pdo_pgsql \
+    bcmath \
+    imap \
+    sockets \
+    gd \
+    intl \
+    xml \
+    mbstring
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
